@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentinstag 💘</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+.hearts-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+
+/* Layout */
+.wrapper {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+
+/* Bild links */
+.side-image {
+    width: 35%;
+    margin: 20px;
+    border-radius: 25px;
+    object-fit: cover;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+}
+
+/* Inhalt rechts */
+.container {
+    background: white;
+    width: 55%;
+    padding: 30px;
+    border-radius: 25px 0 0 25px;
+    text-align: center;
+    box-shadow: -10px 0 35px rgba(0,0,0,0.25);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+h1 {
+    color: #e63946;
+    font-size: 26px;
+    margin-bottom: 10px;
+}
+
+#countdown {
+    font-size: 18px;
+    margin-bottom: 25px;
+    color: #555;
+}
+
+button {
+    width: 100%;
+    padding: 16px;
+    margin: 10px 0;
+    font-size: 20px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#yesBtn {
+    background: #ff4d6d;
+    color: white;
+    font-size: 22px;
+}
+
+#noBtn {
+    background: #adb5bd;
+    color: white;
+    font-size: 18px;
+}
+
+/* Herzen */
+.heart {
+    position: absolute;
+    animation: float 6s linear infinite;
+    color: rgba(255,255,255,0.7);
+    z-index: 0;
+}
+
+
+@keyframes float {
+    from { transform: translateY(100vh); opacity: 1; }
+    to { transform: translateY(-10vh); opacity: 0; }
+}
+
+/* Handy */
+@media (max-width: 768px) {
+    .wrapper {
+        flex-direction: column;
+    }
+
+    .side-image {
+    width: 90%;
+    height: 30vh;
+    margin: 15px auto;
+    border-radius: 25px;
+}
+
+
+    .container {
+        width: 100%;
+        height: 65vh;
+        border-radius: 25px 25px 0 0;
+        box-shadow: 0 -10px 35px rgba(0,0,0,0.25);
+    }
+}
+</style>
+</head>
+
+<body>
+<div class="hearts-layer"></div>
+<div class="wrapper">
+    <!-- LINKES BILD -->
+    <img src="Couple.jpg" alt="Wir ❤️" class="side-image">
+
+    <!-- RECHTER INHALT -->
+    <div class="container">
+        <h1>Willst du mein Valentinstags-Date sein? 💕</h1>
+        <div id="countdown">⏳ Wird geladen…</div>
+
+        <button id="yesBtn" onclick="yes()">Ja 💖</button>
+        <button id="noBtn" onclick="no()">Nein 💔</button>
+    </div>
+</div>
+
+<script>
+let yesSize = 22;
+let noSize = 18;
+
+/* Countdown */
+function updateCountdown() {
+    const now = new Date();
+    let year = now.getFullYear();
+    let valentines = new Date(year, 1, 14);
+    if (now > valentines) valentines = new Date(year + 1, 1, 14);
+
+    const diff = valentines - now;
+    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const m = Math.floor((diff / (1000 * 60)) % 60);
+    const s = Math.floor((diff / 1000) % 60);
+
+    document.getElementById("countdown").innerHTML =
+        `⏳ Noch ${d} Tage ${h}h ${m}m ${s}s`;
+}
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+/* Herzen */
+const heartsLayer = document.querySelector(".hearts-layer");
+
+setInterval(() => {
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.innerHTML = "❤️";
+    h.style.left = Math.random() * 100 + "vw";
+    h.style.fontSize = Math.random() * 25 + 15 + "px";
+    h.style.animationDuration = Math.random() * 3 + 4 + "s";
+    heartsLayer.appendChild(h);
+    setTimeout(() => h.remove(), 7000);
+}, 350);
+
+
+/* Nein */
+function no() {
+    yesSize += 6;
+    noSize -= 3;
+    document.getElementById("yesBtn").style.fontSize = yesSize + "px";
+    document.getElementById("noBtn").style.fontSize = Math.max(noSize, 8) + "px";
+}
+
+/* Ja → WhatsApp */
+function yes() {
+    const phoneNumber = "436641405165"; // <-- DEINE NUMMER
+    const message = "Ich sage JA <3 Ich freue mich auf unser Valentinstags-Date!";
+
+    const link = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.location.href = link;
+}
+</script>
+
+</body>
+</html>
